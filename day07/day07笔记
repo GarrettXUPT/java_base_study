@@ -1,0 +1,164 @@
+
+内部类：
+    若一个类中包含另一个类，里面的就是内部类。
+    分类：
+        1、成员内部类
+        2、局部内部类(包含匿名内部类)
+
+    成员内部类：
+       修饰符 class 类名称{
+            修饰符 class 内部类名称{
+            ......
+            }
+       }
+       注意：内用外，随意访问，外用内就要使用外部类对象，再使用内部类资源
+
+   如何使用成员内部类：
+        1、间接方法：在外部类方法中，使用内部类。然后在main中只使用外部类即可的方法
+        2、直接方式：公式：外部类名称. 内部类名称 对象名称 = new 外部类名称().new 内部类名称();
+        若成员变量有重名，则访问格式为 外部类名称.this.成员变量  访问的是外部类的成员变量
+
+   局部内部类：
+        格式：修饰符 class 外部类名称{
+            修饰符 返回值类型 外部类方法名称(参数列表){
+                    class 局部内部类类名称{
+                        ......
+                    }
+            }
+        }
+
+   定义一个类时，权限修饰符规则
+        1、外部类 public / (default)
+        2、成员内部类 public/protected/private/(default)
+        3、局部内部类 什么也不要写
+
+   局部内部类的final问题
+        局部内部类若希望访问所在方法的局部变量，那么这个局部变量一定是有效final的，局部变量在其他地方不可修改
+        备注：若局部变量事实不变，那么该final关键字可以省略
+        原因：
+            new出来的对象在堆当中，但是局部变量和方法一致，在栈内存当中，方法运行结束，立刻出栈，局部变量就会立即被销毁
+            但是，new出来的对象在堆中一直存在，直到垃圾回收消失
+
+   匿名内部类：
+        若接口的实现类(或者是父类的子类)只使用唯一的一次，也就是只创建一个对象，那么就可以省略掉该类的定义，而改为匿名内部类
+        格式：接口名称 对象名 = new 接口名称{
+            // 覆盖重写接口中所有抽象方法
+        }
+        对格式进行解析 new 接口名称{....}
+            1、new代表创建对象的动作
+            2、接口名称就是匿名内部类需要实现哪个接口
+            3、{....}就是匿名内部类的内容
+        注意事项：
+            1、匿名内部类在创建对象时候，只能使用唯一一次，只能new出一个对象，若希望多次创建对象，则必须使用接口的实现类
+            2、匿名对象在调用方法的时候，也只能调用一次，若想多次调用，那么就要给它起名字，例如：obj
+            3、匿名内部类是省略了实现类、子类名称，但是匿名对象省略了对象名称
+            4、匿名内部类与匿名对象并不是一回事
+        成员变量不只可用基本类型，实际上可以使用任何一种类、接口也可以作为成员变量类型
+
+equals方法：
+    boolean equals(Object obj)  比较两个对象是否一致，默认比较的是两个对象的地址值
+    参数为任意对象，基本数据类型 == 比较的是数值，若为引用类型 == 比较的是两个对象的地址值
+    若将p2 = p1 将p1的地址值赋值给p2，这样返回的才是true，若是使用一个类，创建两个对象，返回的一定是false，因为创建对象的地址值不一致
+    重写Objective的equals方法：
+        使equals方法比较对象的属性,但是存在问题，多态无法使用子类特有的内容(属性和方法)
+        解决方案：可以使对象向下转型(强制把obj类型转化为Person)
+    Object两个对象进行比较，要防止空指针异常
+
+日期和时间(Date类)
+    java.utils.Date,表示特定的时间，精确到毫秒
+    可表示特定的瞬间，毫秒值的作用，可以对日期进行计算
+    常用的构造方法和成员方法
+    Date() 空参数构造方法，用来获取当前的日期和时间,该种构造方法打印出来的是当前的年月日
+    Date(long date) :传入的是毫秒值，它会将毫秒值转化为date日期
+    long getTime(),将日期转化为毫秒，此为成员方法
+
+DateFormat类
+    java.text.DateFormat 是时间日期格式化的抽象类，无法直接创建对象使用，可以使用DateFormat的子类
+    作用：格式化(将日期转化为文本)，解析(将文本转化为日期)
+        成员方法：
+            String format(Date date) 按照指定的格式，将日期格式化为符合模式的字符串
+            Date parse(String source) 将符合模式的字符串，该处传的是固定的时间，将其转化为日期
+    java.text.SimpleFormat extends DateFormat
+    构造方法：
+        SimpleDateFormat(String patten)用给定的模式和默认语言环境对的格式符号进行构造
+        参数：String patten 模式：区分大小写，主要关注的是年月日，时分秒
+        y M d  H m S 年 月 日 时 分 秒
+        模式中的字母不可更改，但是连接符是可以更改的
+
+Calendar类：
+     日历类为抽象类：以为在某一特定时刻和一组之间的转换的方法calendar fields如YEAR ， MONTH ， DAY_OF_MONTH ， HOUR
+          无法直接创建对象进行使用，它含有getInstance()方法，返回了其子类对象
+          public static Calendar getInstance(TimeZone zone)
+          获取Calendar类子对象 Calendar c = Calendar.getInstance(); // 多态方法
+     常用成员方法：
+         public int get(int field)  返回日历字段的值
+         public void set(int field, int value)  将给定的日历字段，返回为给定值
+         public abstract void add(int field, int amount)  根据日历的规则，将指定的时间量添加或减去给定的日历字段。
+         public Date getTime()  将日历对象转化为日期对象
+         成员方法参数：
+           int field,日历类的字段，可以通过Calendar类的静态成员变量获取
+           public static final int YEAR = 1;
+           public static final int MONTH = 2;
+           public static final int DATE = 5;
+           public static final int DAY_OF_MONTH = 5;
+           public static final int HOUR = 10;
+           public static final int MINUTE = 12;
+           public static final int SECOND = 13;
+
+System类：
+    提供了大量静态方法来获取系统信息或进行系统操作。
+    static void arrayCopy(Object src, int srcPos, Object dest, int destPos, int length)
+    将指定源数组中的数组从指定位置复制到目标数组的指定位置。
+    static long currentTimeMillis()
+    返回当前时间，以毫秒为单位
+
+StringBuilder类：
+    字符串不变; 它们的值在创建后不能被更改。 字符串缓冲区支持可变字符串。 因为String对象是不可变的，它们可以被共享。
+    可提高字符串处理的效率，字符串底层是一个被final修饰的数组，是一个常量，进行字符串相加内存中会有很多字符串，占用空间多，造成效率低下
+    缓冲区可以提高字符串的使用效率(可作为一个长度可变的字符串)，底层也是数组，但是并没有被final修饰，占用空间小，若超过了其容量
+    StringBuilder会自动扩容
+    构造方法：
+        StringBuilder() 构造一个不带任何字符的字符串生成器，其初始容量为16字符
+        StringBuilder(string str)  初始化为指定的字符串
+    常用方法：
+        public StringBuilder append() 添加任意类型数据字符串，返回当前对象本身
+        public String toString()  将当前StringBuilder对象转化为字符串
+
+包装类：
+    基本数据类型使用方便，但是没有对应的方法来操作基本数据类型，可以使用一个类将基本数据类型的数据装起来，在类中定义方法，可以通过这些方法
+    操作基本数据类型
+    拆箱与装箱：
+    装箱：从基本数据类型转化为对应的包装类对象
+        1、使用构造方法
+            Integer(int value)  构造一个新分配的Integer类对象，表示特定的int值
+            Integer(String s)   构造一个新分配的Integer对象，表示String参数对应的int值，传递的一定要是基本类型的字符串，否则会抛出异常
+        2、使用静态方法
+            static Integer valueOf(int i)
+            static Integer valueOf(string str)
+    拆箱：从包装类对象转化为基本数据类型
+        成员方法 int intValue()  以int类型返回Integer类型的值
+    自动拆箱与自动装箱：
+        基本类型与包装类之间可以进行自动转换
+        自动装箱：
+            可将int类型的数据之间赋值给包装类
+        自动拆箱：
+            包装类无法直接进行计算，但是它可以转换为基本数据类型进行参与运算
+            ArrayList集合无法直接存储整数，但是它可以之间存储Integer包装类
+    基本类型与字符串类型的相互转换
+        基本类型转换为字符串
+            1、基本类型的值，直接加上一个空字符串 1 + "" 转化为字符串
+            2、包装类的静态方法toString()，注意这里不是Object的toString方法，相互为重载关系
+            3、String的静态方法valueOf(int i)  将int类型转化为字符串
+        字符串转化为基本类型
+            包装类的静态方法parsexxx("数值类型的字符串");，请注意，参数传递的是数值类型的字符串，比如"112233"这样 "A"传进去是无效的
+            例：Integer类 static int parseInt(String str); 其他基本数据类型也有该类型的静态方法
+            次用方式 int num = Integer.parseInt("123");  num == 123
+
+
+
+
+
+
+
+
+
