@@ -1,0 +1,76 @@
+
+函数式接口：
+    有且仅有一个抽象方法的接口，适用于函数式编程场景，java中体现函数式接口的就是lambda使用的接口，确保接口中只有一个抽象方法
+    java中的lambda才可以顺利的推导
+    语法塘：更加方便，但是原理不变的语法
+
+    格式：
+        函数式接口，有且仅有一个抽象方法的接口，称之为函数式接口，当然接口中可以包含其他的方法(默认，静态，私有)
+
+    使用：
+        一般可以作为参数和方法的返回值类型来使用
+
+常用的函数式接口：
+    java.util.function.Supplier<T>,包含了一个无参数方法T get()，用来获取泛型指定类型的泛型数据
+    Supplier接口被称之为生产性接口，指定接口的泛型是什么类型，那么接口中的get方法就会生产什么类型的数据
+
+
+    java.util.Consumer接口，功能正好与Supplier接口相反，她不是生产数据，而是消费数据
+    Consumer接口是消费型接口，泛型指定什么类型，就可以使用accept消费什么类型的数据，至于该方法如何使用，就要自义定完成
+    Consumer接口的默认方法andThen，可以将两个Consumer接口进行拼接，然后再对数据进行处理
+
+
+    java.util.function.Predicate<T>接口
+    作用：对某种数据进行判断，得到一个布尔值
+    抽象方法：
+        boolean test(T t) 用来对指定类型数据进行判断的方法，符合条件就返回True 不符合就返回false
+    默认方法
+        and：就是逻辑关系表达式的与
+        or: 就是逻辑关系的或
+        negate：就是逻辑关系的非
+
+    java.util.function.Function<T, R>接口
+    作用：将一个类型的数据转化为另一个类型的数据，前者称之为前置条件，后者称之为后置条件
+    抽象方法：
+        R apply(T t) 将T类型的数据转化为R类型
+    默认方法：
+        andThen：起到将两个Function接口进行组合
+
+Stream流：
+    可用于解决集合与数组现有的弊端
+
+    流式思想：
+        拼接流式模型，建立一个生产线来生产物品
+
+    java.util.Stream<T> 是最常用的流接口，但他不是函数式接口
+    获取流的方法：
+        1、所有的Collection集合都可以使用stream方法来获取流 default Stream<T> Stream()
+        2、Stream接口的静态方法of可以获取相应的流  Static<T> Stream<T> of(T...values)
+           此处的参数是一个可变参数，那么我们就可以传递一个数组
+
+    Stream流中的常用方法：
+        延迟方法：返回值类型仍然是Stream接口的自身方法，支持链式调用
+        终结方法：返回值类型不再是Stream类型自身类型的方法，所以不支持链式调用
+        逐一处理：forEach void forEach(Consumer<? supper T> action)  接收Consumer接口，会将每一个流元素交给函数处理,这是一个终结方法
+        过滤：filter Stream<T> filter(Predicate<? super T> predicate) 接收Predicate接口作为筛选条件
+        映射Map：<R> Stream<R> map(Function<? supper T, ? extends R> mapper) 将流中的一种类型数据转化为另一种类型的数据
+        统计个数的方法：count long count() 返回值为元素的个数
+        对流进行截取：Stream<T> limit(lon maxsize)  若当前流长度大于截取值时，就自动对流进行截取
+        跳过前几个元素：Stream<T> skip(long n)  若流的长度大于n，则将跳过前n个元素，否则就会得到一个长度为0的空流
+        组合方法concat：若有两个流，要被组合成一个流 static <T> Stream<T> concat(Stream <? extends T> a, Stream<? extends T> b)
+
+    Stream流的特点：
+        stream流属于管道流，只能被消费(使用)一次，第一个stream流调用完方法，数据就会流转到下一个stream流上
+        这时第一个stream流已经使用完毕，就会关闭，所以第一个stream流就不能再调用方法了
+
+方法引用：
+    主要是对lambda表达式的优化
+    通过对象名引用成员方法，使用的前提是对象名是已经存在的，成员方法也是已经存在的，就可以使用对象名来引用成员方法
+    通过类名称引用静态方法，使用前提是类已经存在，静态方法也已经存在，就可以类名直接引用静态成员方法
+    使用supper引用父类的成员方法
+    使用this引用本类成员方法
+    类的构造器引用 类名称 :: new 格式表示
+    数组的构造器引用
+
+
+
