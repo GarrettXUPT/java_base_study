@@ -1,0 +1,121 @@
+
+集合框架：
+    学习集合的目标：
+        1、会使用集合存储数据
+        2、会遍历集合，将数据提取出来
+        3、掌握每种集合的特性
+
+    List集合：(Vector集合，ArrayList集合，LinkList集合)
+        1、有序的集合(存取顺序相同)
+        2、允许存储重复的元素
+        3、有索引，可以使用for循环进行遍历
+
+    set集合：(TreeSet集合，HashSet集合，LinkedHashSet)
+        1、不允许存储重复的元素
+        2、没有索引，不能使用for循环遍历
+
+    Collection接口(List集合、Set集合)：
+        1、定义所有单列集合中共性的方法
+        2、所有的单列集合都可以使用这些共性的方法
+
+Collection的常用方法：
+    java.utils.Collection
+    Collection是一个顶层的结构,里面定义了所有集合共性的方法，任意的单列集合都可以使用这些方法
+    共性的方法：
+        public boolean add(E e) 将给定的元素添加到集合中
+        public void clear()  清空集合中的元素
+        public boolean remove(E e) 把指定的元素从集合中删除
+        public boolean contains(E e) 判断当前集合中是否包含指定的元素
+        public boolean isEmpty() 判断集合是否为空
+        public Object[] toArray() 把集合中的元素，存储到数组中
+        public int size()  返回集合中的元素个数
+
+Iterator类(迭代器):
+     java.utils.Iterator接口：迭代器，可对该集合进行遍历
+     常用方法：
+        boolean hasNext() 若有元素可以迭代，则返回true，若没有，则返回false
+        E next() 返回迭代的下一个元素
+     Iterator是一个接口，无法直接使用，需要该接口的实现类对象，获取实现类的对象比较特殊，Collection接口中有个方法iterator，返回的就是实现类对象
+     Iterator<E> iterator() 返回collection的元素的迭代器 使用格式 collection.iterator()
+     迭代器的使用：
+        1、使用集合中的方法iterator获取迭代器的实现类对象，使用Iterator接口接收即可(多态)
+        2、使用Iterator接口中的hasNext()判断是否含有下一个元素
+        3、使用Iterator接口中的Next()方法，取出集合中的元素
+
+     增强for循环，专门用来遍历集合和数组：
+        底层使用的就是迭代器，使用for循环的格式，简化了迭代器的书写
+        Collection<E>extends Iterable<E>
+        public interface Iterable<E>实现这个接口成为foreach语句的目标
+        格式：
+            for(集合/数组的数据类型 变量名 : 集合名/数组名){
+                sout(变量名)
+            }
+
+泛型：
+    一种未知的数据类型，当我们不知道使用什么数据类型时，我们可以使用泛型，也可以看为一个变量，用来接收数据类型
+    ArrayList集合在定义的时候，不知道集合中传输什么类型的数据，所以类型使用泛型E
+    当创建集合对象的时候就会确定集合的数据类型ArrayList<String> list = new ArrayList<String>();
+    当创建集合对象不使用泛型：
+        好处：
+            集合不使用泛型，默认的类型时Object类型，可以存储任意类型的数据
+        缺点：
+            集合中的数据不安全，可能会引起异常
+    创建集合对象使用泛型：ArrayList<String> list = new ArrayList<String>();
+        好处：
+            1、避免了类型转换的麻烦，存储的是什么类型，取出的就是什么类型
+            2、将运行期异常提升到了编译期
+
+    泛型的定义与方法
+        定义一个有泛型的类，当不确定什么数据类型时，使用泛型，泛型可以接受任意类型的数据
+    含有泛型的方法：
+        定义的泛型方法的修饰符和返回值类型之间
+        格式：
+            修饰符 <泛型> 返回值类型 方法名(参数列表(使用泛型)){
+                方法体；
+            }
+            含有泛型的方法，在调用方法的时候，确定数据类型，传递什么数据类型的参数，泛型就是什么数据类型
+            含有泛型的静态方法    private static <M> void method01(M  m)，使用类名.方法名进行调用，可以直接使用
+            含有泛型的普通方法    private <M> void method01(M  m)
+    含有泛型的接口：
+        public interface GeneraticInterface<I>{
+            public abstract void method(I i);
+        }
+        第一种使用方式：
+            定义接口的实现类，实现接口，指定接口的泛型
+            public interface Iterator<E>{
+                E.next();
+            }
+            Scanner实现了Iterator的接口，并指定泛型的数据类型为字符串，重写了next方法，泛型默认就是字符串
+            public float class Scanner implements Iterator<String>{
+                public String next(){
+
+                    }
+                }
+            }
+        第二种使用方式：
+            接口使用什么泛型，实现类就是用什么泛型，类跟着接口走，就相当于一个含有泛型的类，创建对象的时候，就确定泛型的类型
+            public interface List<E>{
+                boolean add(E e);
+                E get(int index);
+            }
+            public class ArrayList<E> implements List<E>{
+                public boolean add(E e){}
+                public E get(int index) {}
+            }
+
+    泛型的通配符：
+        不知道是用什么类型来接收数据的时候，就是用？进行接收，？表示未知通配符，只能接收数据，而不能传递数据
+        使用方式：只能是作为方法参数使用，而不能创建对象
+        泛型的上限限定：？extends E 代表使用的泛型只能是E类型的子类
+        泛型的下限限定：E extends ? 代表使用的泛型只能是E类型的父类
+
+
+
+
+
+
+
+
+
+
+
